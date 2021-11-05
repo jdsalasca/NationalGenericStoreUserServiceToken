@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.genericStore.security.dao.IUserDAO;
+import com.genericStore.security.entities.User;
+import com.genericStore.security.models_dto.PrincipalUser;
 
 
 
@@ -21,8 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		iUserDAO.getUserByNick(username);
-		return null;
+		User user = iUserDAO.getUserByNick(username);
+		return PrincipalUser.build(user);
 	}
 
 }

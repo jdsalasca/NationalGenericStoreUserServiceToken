@@ -1,5 +1,7 @@
 package com.genericStore.security.controllers;
 
+import java.io.Console;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +48,13 @@ public class AuthUserController {
 			 return new ResponseEntity(new Message("campos mal puestos"), HttpStatus.BAD_REQUEST);
 			
 		}
+		
 //	    if(bindingResult.hasErrors())
 //	        return new ResponseEntity(new Message("campos mal puestos"), HttpStatus.BAD_REQUEST);
 	    Authentication authentication =
 	            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getNick(), loginUser.getPassword()));
 	    SecurityContextHolder.getContext().setAuthentication(authentication);
+	    
 	    String jwt = jwtProvider.generateToken(authentication);
 	    UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 	    JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
