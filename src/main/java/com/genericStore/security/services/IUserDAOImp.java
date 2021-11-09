@@ -77,5 +77,32 @@ public class IUserDAOImp implements IUserDAO {
 		
 		return false;
 	}
+	@Override
+	public boolean existByEmail(String email) {
+		String query = "From User WHERE email= :email";
+		List <User> lista = entityManager.createQuery(query)
+				.setParameter("email", email)
+				.getResultList();
+		if (lista.isEmpty()) {
+			return false;
+		}
+		
+		return true;
+	}
+
+
+
+
+	@Override
+	public boolean existByNick(String nick) {
+		String query = "From User WHERE nick = :nick";
+		List <User> lista = entityManager.createQuery(query)
+				.setParameter("nick", nick)
+				.getResultList();
+		if (lista.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 
 }

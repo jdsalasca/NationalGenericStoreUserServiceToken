@@ -17,5 +17,9 @@ public interface IUserDAO {
 	User  getUserByNick (String nick);
 
 	boolean validateCredentials(@Valid LoginUser loginUser);
+	
+	boolean existByEmail (String email);
+	
+	boolean existByNick (String nick);
 
 }

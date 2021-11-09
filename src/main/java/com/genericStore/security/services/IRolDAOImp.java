@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.genericStore.security.dao.IRolDAO;
 import com.genericStore.security.entities.Rol;
+import com.genericStore.security.enums.RolName;
 
 
 
@@ -21,7 +22,7 @@ public class IRolDAOImp implements IRolDAO{
 	EntityManager entityManager;
 
 	@Override
-	public List<Rol> findRolByName(String name) {
+	public Rol findRolByName(RolName name) {
 	    String query = "FROM Usuario WHERE rolNombre = :name";
 	    List<Rol> lista = entityManager.createQuery(query)
 	            .setParameter("name", name)
@@ -30,7 +31,7 @@ public class IRolDAOImp implements IRolDAO{
 	    if (lista.isEmpty()) {
 	        return null;
 	    }
-		return lista;
+		return lista.get(0);
 	}
 
 	@Override

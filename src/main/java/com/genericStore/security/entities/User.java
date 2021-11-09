@@ -76,6 +76,19 @@ public class User {
 		this.email = email;
 		this.roles = roles;
 	}
+	
+
+
+
+	public User(@NotNull String name, @NotNull String identityDocument, @NotNull String nick, @NotNull String password,
+			@NotNull String email) {
+		super();
+		this.name = name;
+		this.identityDocument = identityDocument;
+		this.nick = nick;
+		this.password = password;
+		this.email = email;
+	}
 
 
 
