@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +20,14 @@ import com.genericStore.security.enums.RolName;
 @Transactional
 public class IRolDAOImp implements IRolDAO{
 	
+
+	
 	@PersistenceContext
 	EntityManager entityManager;
 
 	@Override
 	public Rol findRolByName(RolName name) {
-	    String query = "FROM Usuario WHERE rolNombre = :name";
+	    String query = "FROM Rol WHERE rolNombre = :name";
 	    List<Rol> lista = entityManager.createQuery(query)
 	            .setParameter("name", name)
 	            .getResultList();

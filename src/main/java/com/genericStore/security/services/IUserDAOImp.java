@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +26,11 @@ public class IUserDAOImp implements IUserDAO {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+    @Autowired
+    PasswordEncoder passwordEncoder;
 	
 	
 
-	@Override
-	public List<User> listUsers() {
-		
-		return null;
-	}
 
 
 
@@ -48,8 +47,12 @@ public class IUserDAOImp implements IUserDAO {
 
 	@Override
 	public User getUserByNick(String nick) {
-		// TODO Auto-generated method stub
-		return null;
+		 String query = "FROM User WHERE email = :email OR nick= :email";
+	        List<User> lista = entityManager.createQuery(query)
+	                .setParameter("email",nick)
+	                .getResultList();
+		
+		return lista.get(0);
 	}
 
 
@@ -70,8 +73,7 @@ public class IUserDAOImp implements IUserDAO {
 
         String passwordHashed = lista.get(0).getPassword();
 
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        if (argon2.verify(passwordHashed, loginUser.getPassword())) {
+        if (passwordEncoder.matches(loginUser.getPassword(),lista.get(0).getPassword())) {
             return true;
         }
 		
@@ -103,6 +105,15 @@ public class IUserDAOImp implements IUserDAO {
 			return false;
 		}
 		return true;
+	}
+
+
+
+
+	@Override
+	public List<User> getUserList() {
+		String query = "FROM User";
+		return entityManager.createQuery(query).getResultList();	
 	}
 
 }

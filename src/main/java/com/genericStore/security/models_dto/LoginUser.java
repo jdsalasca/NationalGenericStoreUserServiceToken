@@ -7,6 +7,8 @@ public class LoginUser {
     private String nick;
     @NotBlank
     private String password;
+    
+    
 	public String getNick() {
 		return nick;
 	}

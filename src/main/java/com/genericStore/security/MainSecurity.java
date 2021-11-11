@@ -10,17 +10,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.genericStore.security.jwt.JwtEntryPoint;
 import com.genericStore.security.jwt.JwtTokenFilter;
 import com.genericStore.security.services.UserDetailsServiceImpl;
 
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
+
 
 
 @Configuration
@@ -42,26 +40,25 @@ public class MainSecurity extends WebSecurityConfigurerAdapter  {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-    	
-    	
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    	
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+  
+    	return super.authenticationManagerBean();
     }
 
     @Override
-    @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    	return super.authenticationManager();
     }
 
     @Override

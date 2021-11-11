@@ -10,7 +10,7 @@ import com.genericStore.security.models_dto.LoginUser;
 public interface IUserDAO {
 	
 	
-	List <User> listUsers ();
+	List <User> getUserList ();
 	
 	void newUser (User user);
 	

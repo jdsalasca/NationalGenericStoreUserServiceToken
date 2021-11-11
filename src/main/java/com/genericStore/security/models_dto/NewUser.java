@@ -1,9 +1,10 @@
 package com.genericStore.security.models_dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 public class NewUser {
     @NotBlank
@@ -34,6 +35,22 @@ public class NewUser {
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
+	}
+	
+	
+	public NewUser(@NotBlank String name, @NotBlank String nick, @NotBlank String identityDocument, @Email String email,
+			@NotBlank String password) {
+		super();
+		this.name = name;
+		this.nick = nick;
+		this.identityDocument = identityDocument;
+		this.email = email;
+		this.password = password;
+	}
+	
+	
+	public NewUser() {
+		super();
 	}
 	public String getName() {
 		return name;
@@ -71,6 +88,9 @@ public class NewUser {
 	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
+	
+	
+	
 
     
     

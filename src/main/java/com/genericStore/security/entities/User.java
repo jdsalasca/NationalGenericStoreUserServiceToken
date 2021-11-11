@@ -28,17 +28,19 @@ public class User {
 	@Column(name = "nombre")
 	private String name;
 	@NotNull
-	@Column(name = "cedula")
-	private String identityDocument;
-	@NotNull
 	@Column(name = "nick")
 	private String nick;
 	@NotNull
-	@Column(name = "password")
-	private String password;
-	@NotNull
 	@Column(name = "email")
 	private String email;
+	@NotNull
+	@Column(name = "cedula")
+	private String identityDocument;
+
+	@NotNull
+	@Column(name = "password")
+	private String password;
+
 	
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
@@ -52,51 +54,31 @@ public class User {
 
 
 
-	public User(long id, @NotNull String name, @NotNull String identityDocument, @NotNull String nick,
-			@NotNull String password, @NotNull String email, @NotNull Set<Rol> roles) {
+
+	public User(@NotNull String name, @NotNull String nick, @NotNull String email, @NotNull String identityDocument,
+			@NotNull String password, @NotNull Set<Rol> roles) {
 		super();
-		this.id = id;
 		this.name = name;
-		this.identityDocument = identityDocument;
 		this.nick = nick;
-		this.password = password;
 		this.email = email;
+		this.identityDocument = identityDocument;
+		this.password = password;
 		this.roles = roles;
 	}
 
 
 
-	public User(@NotNull String name, @NotNull String identityDocument, @NotNull String nick, @NotNull String password,
-			@NotNull String email, @NotNull Set<Rol> roles) {
+
+	public User(@NotNull String name, @NotNull String nick, @NotNull String email, @NotNull String identityDocument,
+			@NotNull String password) {
 		super();
 		this.name = name;
-		this.identityDocument = identityDocument;
 		this.nick = nick;
-		this.password = password;
 		this.email = email;
-		this.roles = roles;
-	}
-	
-
-
-
-	public User(@NotNull String name, @NotNull String identityDocument, @NotNull String nick, @NotNull String password,
-			@NotNull String email) {
-		super();
-		this.name = name;
 		this.identityDocument = identityDocument;
-		this.nick = nick;
-		this.password = password;
-		this.email = email;
-	}
-
-
-
-	public User(@NotNull String nick, @NotNull String password) {
-		super();
-		this.nick = nick;
 		this.password = password;
 	}
+
 
 
 

@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +43,9 @@ import de.mkammerer.argon2.Argon2Factory;
 @RequestMapping(path = "/auth")
 public class AuthUserController {
 	
+    @Autowired
+    PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private IUserDAO iUserDAO;
 
@@ -62,12 +66,11 @@ public class AuthUserController {
             return new ResponseEntity(new Message("That UserName is already in use"), HttpStatus.BAD_REQUEST);
         if(iUserDAO.existByEmail(newUser.getEmail()))
             return new ResponseEntity(new Message("That Email is already in use"), HttpStatus.BAD_REQUEST);
-//		Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-//		String hash = argon2.hash(1, 1024, 1, newUser.getPassword());
-//		newUser.setPassword(hash);
+
         User user =
-                new User(newUser.getName(), newUser.getNick(), newUser.getEmail(), newUser.getIdentityDocument(),
-                		newUser.getPassword());
+        		
+                new User(newUser.getName(), newUser.getNick(), newUser.getEmail(), newUser.getIdentityDocument(),   passwordEncoder.encode(newUser.getPassword())
+                		);
         Set<Rol> roles = new HashSet<>();
         roles.add(iRolDAO.findRolByName(RolName.ROLE_USER));
         if(newUser.getRoles().contains("admin"))
@@ -79,17 +82,19 @@ public class AuthUserController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult){
-		if(!iUserDAO.validateCredentials(loginUser)) {
-			 return new ResponseEntity(new Message("please check all fields"), HttpStatus.BAD_REQUEST);
-			
-		}
 		
-//	    if(bindingResult.hasErrors())
-//	        return new ResponseEntity(new Message("Fields Wrong"), HttpStatus.BAD_REQUEST);
+		 if(!iUserDAO.validateCredentials(loginUser)) { return new ResponseEntity(new
+		  Message("please check all fields"), HttpStatus.BAD_REQUEST);
+		 
+		  }
+		 
+			/*
+			 * if(bindingResult.hasErrors()) return new ResponseEntity(new
+			 * Message("Fields Wrong"), HttpStatus.BAD_REQUEST);
+			 */
 	    Authentication authentication =
 	            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getNick(), loginUser.getPassword()));
 	    SecurityContextHolder.getContext().setAuthentication(authentication);
-	    
 	    String jwt = jwtProvider.generateToken(authentication);
 	    UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 	    JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());

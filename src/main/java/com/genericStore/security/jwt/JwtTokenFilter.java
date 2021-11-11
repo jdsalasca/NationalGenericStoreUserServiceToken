@@ -29,7 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-        try {
+    	try {
             String token = getToken(req);
             if(token != null && jwtProvider.validateToken(token)){
                 String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
